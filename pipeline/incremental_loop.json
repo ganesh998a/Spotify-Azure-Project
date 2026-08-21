@@ -327,8 +327,6 @@
 						"activity": "ForEach1",
 						"dependencyConditions": [
 							"Failed",
-							"Skipped",
-							"Completed",
 							"Succeeded"
 						]
 					}
@@ -348,7 +346,7 @@
 						"type": "Expression"
 					},
 					"body": {
-						"value": "{\n    \"pipeline_name\": @{pipeline().Pipeline},\n    \"pipeline_runId\": @{pipeline().RunId}\n}",
+						"value": "{\n    \"pipeline_name\": \"@{pipeline().Pipeline}\",\n    \"pipeline_runId\": \"@{pipeline().RunId}\"\n}",
 						"type": "Expression"
 					}
 				}
