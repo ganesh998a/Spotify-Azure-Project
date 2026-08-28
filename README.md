@@ -45,7 +45,7 @@ The Silver layer is implemented using Azure Databricks + Spark Structured Stream
 
 Instead of directly creating managed catalog tables first, this project writes and maintains Delta files at explicit storage paths (URIs) in ADLS Gen2. These paths act as the system of record, and tables are registered in Unity Catalog only after the data is stabilized.
 
-#### Key Silver Layer Design Decisions
+### Key Silver Layer Design Decisions
 
 - Delta files are read and written using explicit storage paths (URIs).
 - Upsert (`MERGE`) logic is applied at the file level, not catalog-first.
@@ -53,7 +53,7 @@ Instead of directly creating managed catalog tables first, this project writes a
 - First load creates Delta files; subsequent loads perform `MERGE`-based upserts.
 - Unity Catalog tables are created on top of existing Delta files (external tables).
 
-#### Why This Approach?
+### Why This Approach?
 
 - Decouples physical storage from logical table definitions.
 - Safer and more flexible for streaming + incremental pipelines.
@@ -70,11 +70,11 @@ The Gold layer is built using Databricks **Delta Live Tables (DLT)** pipelines a
 
 Unlike ad-hoc notebook transformations, this project uses declarative DLT pipelines to apply CDC-based transformations consistently across all fact and dimension tables.
 
-#### Gold Layer Design Pattern
+### Gold Layer Design Pattern
 
 For each Gold table, the following standardized pattern is implemented:
 
-#### Streaming Staging Table
+### Streaming Staging Table
 
 Reads from the Silver layer using `readStream`.
 
@@ -82,13 +82,13 @@ Configured with `ignoreChanges = true` to safely consume `MERGE`-based Delta upd
 
 Acts as a controlled staging layer for CDC processing.
 
-#### Explicit Target Table Declaration
+### Explicit Target Table Declaration
 
 Target Gold tables are explicitly declared as streaming tables.
 
 Prevents runtime dependency and ordering issues during pipeline execution.
 
-#### CDC Application Using `apply_changes`
+### CDC Application Using `apply_changes`
 
 Uses primary keys and sequence columns.
 
@@ -99,7 +99,7 @@ Automatically handles inserts and updates.
 <img width="1481" height="722" alt="Screenshot 2026-08-26 120452" src="https://github.com/user-attachments/assets/bbe77f81-b8f0-4807-8b41-016fadbe25ee" />
 
 
-#### Why Delta Live Tables?
+### Why Delta Live Tables?
 
 - Declarative, production-grade pipeline management.
 - Built-in data quality, lineage, and dependency handling.
